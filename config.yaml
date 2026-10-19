@@ -1,0 +1,10 @@
+project:
+  name: City Hotel Booking Demand ML
+  random_state: 42
+
+data:
+  path: data/H2.csv
+
+outputs:
+  directory: outputs
+  artifacts: artifacts

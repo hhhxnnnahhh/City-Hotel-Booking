@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Secrets
+.env
+
+# Generated outputs
+outputs/*
+!outputs/.gitkeep
+
+# Generated model artifacts
+artifacts/*
+!artifacts/.gitkeep
