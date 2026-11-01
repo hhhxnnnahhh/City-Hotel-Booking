@@ -1,7 +1,7 @@
 
 from pathlib import Path
 
-from networkx import display
+#from networkx import display
 import pandas as pd
 import matplotlib.pyplot as plt
 
