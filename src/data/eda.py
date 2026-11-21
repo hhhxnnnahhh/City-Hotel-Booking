@@ -50,6 +50,22 @@ missing = pd.DataFrame({
 missing.to_csv(OUTPUT_DIR / "missing_values.csv")
 print(missing[missing["missing_count"] > 0].to_string())
 
+
+
+for col in ["Agent", "Company"]:
+  if col in df.columns:
+    # Treat NaN or 'NULL' text as missing (no agent / no company)
+    s = df[col].fillna("None").astype(str).str.strip()
+    is_missing = s.isin(["None", "NULL", "nan", ""])
+
+    print(f"\n--- {col} ---")
+    print(f"Missing ('None'): {is_missing.sum():,} ({is_missing.mean()*100:.1f}%)")
+    print(f"Unique IDs (excluding missing): {s[~is_missing].nunique()}")
+    print("Top 5 IDs:")
+    print(s[~is_missing].value_counts().head(5))
+    print("Cancellation rate (%) — Missing vs. Present:")
+    print((df.groupby(is_missing)["IsCanceled"].mean() * 100).round(2))
+
 # === DUPLICATE ROWS ===
 print("\n=== DUPLICATE ROWS ===")
 duplicate_count = df.duplicated().sum()
