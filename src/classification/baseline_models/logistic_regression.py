@@ -1,4 +1,3 @@
-
 from pathlib import Path
 
 import pandas as pd
@@ -36,7 +35,7 @@ from src.classification.preprocessing import (
 # ROOT = Path(__file__).resolve().parents[2]
 
 ARTIFACT_DIR = ROOT / "artifacts" / "classification"
-OUTPUT_DIR = ROOT / "outputs" / "classification"
+OUTPUT_DIR = ROOT / "outputs" / "classification"  / "logistic_regression"
 
 ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -86,11 +85,13 @@ def train_logistic_regression():
     print(cm)
 
     print("\nClassification Report:")
-    report = classification_report(
-        y_test,
-        y_pred,
-        zero_division=0
+    report_result = classification_report(
+    y_test,
+    y_pred,
+    zero_division=0,
+    output_dict=False
     )
+    report = str(report_result)
     print(report)
 
     # 7. Save the model
@@ -98,7 +99,7 @@ def train_logistic_regression():
     joblib.dump(model, model_path)
 
     # 8. Save evaluation results
-    results_path = OUTPUT_DIR / "baseline_results.csv"
+    results_path = OUTPUT_DIR / "results.csv"
     results_df = pd.DataFrame([results])
 
     results_df.to_csv(
@@ -113,10 +114,10 @@ def train_logistic_regression():
         columns=["Predicted 0", "Predicted 1"]
     )
 
-    cm_df.to_csv(OUTPUT_DIR / "logistic_regression_confusion_matrix.csv")
+    cm_df.to_csv(OUTPUT_DIR / "confusion_matrix.csv")
 
     # Save classification report
-    report_path = OUTPUT_DIR / "logistic_regression_report.txt"
+    report_path = OUTPUT_DIR / "classification_report.txt"
 
     with open(report_path, "w") as file:
         file.write(report)
@@ -124,7 +125,7 @@ def train_logistic_regression():
     print("\nFiles saved successfully:")
     print("Model:", model_path)
     print("Results:", results_path)
-    print("Confusion matrix:", OUTPUT_DIR / "logistic_regression_confusion_matrix.csv")
+    print("Confusion matrix:", OUTPUT_DIR / "confusion_matrix.csv")
     print("Classification report:", report_path)
 
     return model, results
