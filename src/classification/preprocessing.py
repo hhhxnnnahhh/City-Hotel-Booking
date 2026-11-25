@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 
 ROOT = Path(__file__).resolve().parents[2]
 
-DATA_PATH = ROOT / "data" / "processed" / "classification" / "classification_data.csv"
+DATA_PATH = ROOT / "data" / "processed" / "H2_clean.csv"
 
 TARGET = "IsCanceled"
 
@@ -45,6 +45,19 @@ CATEGORICAL_FEATURES = [
     "DepositType",
     "CustomerType",
 ]
+
+# Predict cancellation using only what is known when the booking is created.
+# Left out for now:
+#   BookingChanges           - may count changes made after the booking was created
+#   AssignedRoomType         - final assigned room may differ from the reserved room
+#   ReservationStatus        - directly reveals the booking outcome
+#   ReservationStatusDate    - records the date of the final status event
+#   RequiredCarParkingSpaces - may reflect information added or changed later
+#   TotalOfSpecialRequests   - requests may be added or changed after booking
+#   DaysInWaitingList        - a later waiting-list process (can happen after the initial request)
+#   ADR                      - needs a timing audit before deciding if it's known at prediction time
+#   Country                  - the source paper warns it may not be known until check-in
+#   Agent, Company           - recorded IDs need a timing and usefulness review
 
 # # these give away the answer
 # LEAKY = ["ReservationStatus", "ReservationStatusDate", "AssignedRoomType", "room_changed"]
